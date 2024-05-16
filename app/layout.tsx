@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Dosis } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import Link from "next/link";
 
 //Criando fontes variáveis que serão utilizadas em conjunto com o Tailwind no arquivo tailwind.config.js
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -22,12 +23,15 @@ export default function RootLayout({
       <body
         className={`${dosis.variable} ${inter.variable} flex flex-col items-center mt-10 bg-neutral-900`}
       >
-        <Image
-          src="/images/logo.svg"
-          alt="Logo checked - meta diária"
-          width={200}
-          height={200}
-        />
+        <Link href="/">
+          <Image
+            src="/images/logo.svg"
+            alt="Logo checked - meta diária"
+            width={200}
+            height={200}
+          />
+        </Link>
+
         {children}
       </body>
     </html>

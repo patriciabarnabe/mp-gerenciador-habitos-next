@@ -1,5 +1,6 @@
 import Image from "next/image";
 import DayState from "./components/DayState";
+import Link from "next/link";
 
 export default function Home() {
   //Os hábitos foram criados como um objeto por causa do uso do Redis por meio do Vercel KV no backend. O Redis é um banco de dados de chave-valor, então ficará mais fácil se uilizarmos um objeto ao invés de um array, por exemplo
@@ -72,6 +73,12 @@ export default function Home() {
             </section>
           </div>
         ))}
+      <Link
+        href="new-habit"
+        className="fixed text-center bottom-10 w-2/3 left-1/2 -translate-x-1/2 text-neutral-900 bg-[#45EDAD] font-display font-regular text-2xl p-2 rounded-md"
+      >
+        novo hábito
+      </Link>
     </main>
   );
 }

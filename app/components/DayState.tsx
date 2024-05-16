@@ -19,7 +19,13 @@ export default function DayState({ day }: { day: boolean | undefined }) {
 
   return (
     <div className="flex items-center justify-center w-9 h-9">
-      <Image src={src} alt={alt} width={size} height={size} />
+      <Image
+        src={src}
+        alt={alt}
+        width={size}
+        height={size}
+        className="cursor-pointer"
+      />
     </div>
   );
 }
