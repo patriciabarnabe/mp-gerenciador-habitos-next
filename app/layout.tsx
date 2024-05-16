@@ -23,7 +23,7 @@ export default function RootLayout({
         className={`${dosis.variable} ${inter.variable} flex flex-col items-center mt-10 bg-neutral-900`}
       >
         <Image
-          src="/logo.svg"
+          src="/images/logo.svg"
           alt="Logo checked - meta diária"
           width={200}
           height={200}
