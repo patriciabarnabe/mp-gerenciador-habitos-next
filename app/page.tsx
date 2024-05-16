@@ -3,7 +3,7 @@ import DayState from "./components/DayState";
 import Link from "next/link";
 
 export default function Home() {
-  //Os hábitos foram criados como um objeto por causa do uso do Redis por meio do Vercel KV no backend. O Redis é um banco de dados de chave-valor, então ficará mais fácil se uilizarmos um objeto ao invés de um array, por exemplo
+  //Os hábitos foram criados como um objeto por causa do uso do Redis por meio do Vercel KV (Key Value) no backend. O Redis é um banco de dados de chave-valor, então ficará mais fácil se uilizarmos um objeto ao invés de um array, por exemplo
   const habits = {
     "estudar japonês": {
       "2024-05-17": true,
