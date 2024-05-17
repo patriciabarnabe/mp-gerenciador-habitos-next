@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ArrowIcon from "./ArrowIcon";
 import DayState from "./DayState";
+import { toggleHabit } from "../actions";
 
 //De acordo com o mês, devemos renderizar os dias corretamente no calendário. Referência: https://stackoverflow.com/questions/13146418/find-all-the-days-in-a-month-with-date-object
 function getDaysInMonth(month: number, year: number) {
@@ -110,7 +111,18 @@ export default function Calendar({
           </div>
         ))}
         {daysInMonth.map((day, index) => (
-          <div key={index} className="flex flex-col items-center p-2">
+          <div
+            key={index}
+            className="flex flex-col items-center p-2"
+            onClick={() =>
+              toggleHabit({
+                habit,
+                habitStreak,
+                date: getDayString(day),
+                done: habitStreak ? habitStreak[getDayString(day)] : true,
+              })
+            }
+          >
             <span className="font-sans text-md font-light text-neutral-400">
               {day?.getDate()}
             </span>
