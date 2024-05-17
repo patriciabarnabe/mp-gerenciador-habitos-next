@@ -1,24 +1,7 @@
 import { kv } from "@vercel/kv";
 import Link from "next/link";
 import ArrowIcon from "@/app/components/ArrowIcon";
-
-//De acordo com o mês, devemos renderizar os dias corretamente no calendário. Referência: https://stackoverflow.com/questions/13146418/find-all-the-days-in-a-month-with-date-object
-function getDaysInMonth(month: number, year: number) {
-  const date = new Date(year, month, 1);
-  const firstWeekday = date.getDay();
-  const numberOfEmptyDays = Array(firstWeekday).fill(null);
-  const days = [...numberOfEmptyDays];
-  while (date.getMonth() === month) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  return days;
-}
-
-const currentDate = new Date();
-const currentDay = currentDate.getDate();
-const currentMonth = currentDate.getMonth();
-const currentYear = currentDate.getFullYear();
+import Calendar from "@/app/components/Calendar";
 
 export default async function Habit({
   params: { name },
@@ -29,10 +12,6 @@ export default async function Habit({
 
   //Procurar o hábito no banco de dados
   const habitStreak = await kv.hget("habits", decodedHabitName);
-
-  const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-
-  const daysInMonth = getDaysInMonth(currentMonth, currentYear);
 
   return (
     <main className="container relative flex flex-col gap-8 px-12 pt-16">
@@ -47,39 +26,9 @@ export default async function Habit({
         Voltar
       </Link>
 
-      <section className="w-full my-2 rounded-md bg-neutral-800">
-        <div className="flex justify-between mx-2 my-4 font-sans text-neutral-400">
-          <button>
-            <ArrowIcon width={24} height={24} className="stroke-neutral-400" />
-          </button>
-          <button>
-            <span>Maio de 2024</span>
-          </button>
-          <button>
-            <ArrowIcon
-              width={24}
-              height={24}
-              className="rotate-180 stroke-neutral-400"
-            />
-          </button>
-        </div>
-        <div className="grid w-full grid-cols-7 mt-2">
-          {weekdays.map((day) => (
-            <div key={day} className="flex flex-col items-center p-2">
-              <span className="font-display text-md font-light text-neutral-200">
-                {day}
-              </span>
-            </div>
-          ))}
-          {daysInMonth.map((day, index) => (
-            <div key={index} className="flex flex-col items-center p-2">
-              <span className="font-sans text-xs font-light text-neutral-400">
-                {day?.getDate()}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <Calendar />
     </main>
   );
 }
+
+//OBS: Server Components vs Client Components -> Para implementar a mudança de mês ao clicar nas setas do calendário, precisaremos utilizar Client Components, uma vez que o evento será triggado por meio de uma interação do usuário, portanto, isso não deverá ser feita do lado do servidor com server components, mas sim do lado do cliente que está realizando a ação em tela. O mesmo se aplica para qualquer evento que esteja relacionado diretamente com algum evento do browser parecido como digitação, hooks etc. Em outras palavras, esses tipos de eventos acontecem no browser, logo, para isso funcionar, o usuário precisa ter acesso ao código do projeto, ou seja, o código precisa estar disponibilizado no browser (client component) e não no servidor (server component). Para seguir essa regra, será criado o client component separado chamado <Calendar/> que será desacoplado do server component desse arquivo
