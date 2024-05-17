@@ -1,7 +1,7 @@
-import Image from "next/image";
 import DayState from "./components/DayState";
 import Link from "next/link";
 import { kv } from "@vercel/kv";
+import DeleteButton from "./components/DeleteButton";
 
 //Objeto pode ser nulo se não existir o hábito. Se o hábito existir, ele vai possuir um objeto que contem uma string como chave e booleano como valor
 type Habits = {
@@ -57,14 +57,7 @@ export default async function Home() {
               <span className="text-xl font-light text-white font-sans">
                 {habit}
               </span>
-              <button>
-                <Image
-                  src="/images/trash.svg"
-                  alt="Ícone de lixeira vermelha"
-                  width={20}
-                  height={20}
-                />
-              </button>
+              <DeleteButton habit={habit} />
             </div>
             <Link href={`habit/${habit}`}>
               <section className="grid grid-cols-7 bg-neutral-800 rounded-md p-2">

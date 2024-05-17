@@ -76,8 +76,8 @@ export default function Calendar({
     return `${uppercaseMonthName} de ${selectedDate.getFullYear()}`;
   }
 
-  //Pegar as chaves de cada dia do objeto de hábitos
   function getDayString(day: Date) {
+    //Pegar as chaves de cada dia do objeto de hábitos
     return `${year.toString()}-${(month + 1).toString().padStart(2, "0")}-${day
       .getDate()
       .toString()
