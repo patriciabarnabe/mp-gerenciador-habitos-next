@@ -19,7 +19,6 @@ function getDaysInMonth(month: number, year: number) {
 }
 
 const currentDate = new Date();
-const currentDay = currentDate.getDate();
 const currentMonth = currentDate.getMonth();
 const currentYear = currentDate.getFullYear();
 
