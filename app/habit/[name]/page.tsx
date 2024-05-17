@@ -1,7 +1,24 @@
 import { kv } from "@vercel/kv";
 import Link from "next/link";
-import Image from "next/image";
 import ArrowIcon from "@/app/components/ArrowIcon";
+
+//De acordo com o mês, devemos renderizar os dias corretamente no calendário. Referência: https://stackoverflow.com/questions/13146418/find-all-the-days-in-a-month-with-date-object
+function getDaysInMonth(month: number, year: number) {
+  const date = new Date(year, month, 1);
+  const firstWeekday = date.getDay();
+  const numberOfEmptyDays = Array(firstWeekday).fill(null);
+  const days = [...numberOfEmptyDays];
+  while (date.getMonth() === month) {
+    days.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+  return days;
+}
+
+const currentDate = new Date();
+const currentDay = currentDate.getDate();
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
 
 export default async function Habit({
   params: { name },
@@ -14,6 +31,8 @@ export default async function Habit({
   const habitStreak = await kv.hget("habits", decodedHabitName);
 
   const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+  const daysInMonth = getDaysInMonth(currentMonth, currentYear);
 
   return (
     <main className="container relative flex flex-col gap-8 px-12 pt-16">
@@ -49,6 +68,13 @@ export default async function Habit({
             <div key={day} className="flex flex-col items-center p-2">
               <span className="font-display text-md font-light text-neutral-200">
                 {day}
+              </span>
+            </div>
+          ))}
+          {daysInMonth.map((day, index) => (
+            <div key={index} className="flex flex-col items-center p-2">
+              <span className="font-sans text-xs font-light text-neutral-400">
+                {day?.getDate()}
               </span>
             </div>
           ))}
