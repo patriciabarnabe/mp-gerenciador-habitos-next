@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import ArrowIcon from "./ArrowIcon";
+import DayState from "./DayState";
 
 //De acordo com o mês, devemos renderizar os dias corretamente no calendário. Referência: https://stackoverflow.com/questions/13146418/find-all-the-days-in-a-month-with-date-object
 function getDaysInMonth(month: number, year: number) {
@@ -23,7 +24,13 @@ const currentYear = currentDate.getFullYear();
 
 const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-export default function Calendar() {
+export default function Calendar({
+  habit,
+  habitStreak,
+}: {
+  habit: string;
+  habitStreak: Record<string, boolean> | null;
+}) {
   //Criação das variáveis de estado: Precisamos salvar e alterar o mês e o ano atual e, para isso, vamos usar a ideia de estado já que estamos trabalhando com algo que será alterado e salvo com o click do usuário
   const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
@@ -69,8 +76,16 @@ export default function Calendar() {
     return `${uppercaseMonthName} de ${selectedDate.getFullYear()}`;
   }
 
+  //Pegar as chaves de cada dia do objeto de hábitos
+  function getDayString(day: Date) {
+    return `${year.toString()}-${(month + 1).toString().padStart(2, "0")}-${day
+      .getDate()
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
   return (
-    <section className="w-full my-2 rounded-md bg-neutral-800">
+    <section className="w-full rounded-md bg-neutral-800">
       <div className="flex justify-between mx-2 my-4 font-sans text-neutral-400">
         <button onClick={goToPreviousMonth}>
           <ArrowIcon width={24} height={24} className="stroke-neutral-400" />
@@ -96,9 +111,15 @@ export default function Calendar() {
         ))}
         {daysInMonth.map((day, index) => (
           <div key={index} className="flex flex-col items-center p-2">
-            <span className="font-sans text-xs font-light text-neutral-400">
+            <span className="font-sans text-md font-light text-neutral-400">
               {day?.getDate()}
             </span>
+            {/*Se o dia existe (ele pode ser nulo), devemos renderizar o estado do dia*/}
+            {day && (
+              <DayState
+                day={habitStreak ? habitStreak[getDayString(day)] : undefined}
+              />
+            )}
           </div>
         ))}
       </div>

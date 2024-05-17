@@ -11,22 +11,25 @@ export default async function Habit({
   const decodedHabitName = decodeURI(name);
 
   //Procurar o hábito no banco de dados
-  const habitStreak = await kv.hget("habits", decodedHabitName);
+  const habitStreak: Record<string, boolean> | null = await kv.hget(
+    "habits",
+    decodedHabitName
+  );
 
   return (
     <main className="container relative flex flex-col gap-8 px-12 pt-16">
-      <h1 className="text-white text-2xl font-light text-center font-display">
+      <h1 className="text-white text-3xl font-regular text-center font-display">
         {decodedHabitName}
       </h1>
       <Link
         href="/"
-        className="flex items-center font-sans text-xs text-neutral-300 gap-1"
+        className="flex items-center font-sans text-md text-neutral-300 gap-1"
       >
-        <ArrowIcon width={20} height={20} />
+        <ArrowIcon width={24} height={24} />
         Voltar
       </Link>
 
-      <Calendar />
+      <Calendar habit={decodedHabitName} habitStreak={habitStreak} />
     </main>
   );
 }
